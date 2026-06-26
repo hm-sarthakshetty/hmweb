@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Home Medix India Private Limited">
+  <rect width="1200" height="630" fill="#0B1F3A"/>
+  <circle cx="960" cy="110" r="260" fill="#0E8F8F" opacity="0.35"/>
+  <rect x="88" y="86" width="1024" height="458" rx="52" fill="#FAFBFC"/>
+  <text x="140" y="210" font-family="Arial, sans-serif" font-size="64" font-weight="800" fill="#0B1F3A">Home Medix India Pvt Ltd</text>
+  <text x="140" y="305" font-family="Arial, sans-serif" font-size="46" font-weight="700" fill="#0E8F8F">Reliable Medical Equipment</text>
+  <text x="140" y="382" font-family="Arial, sans-serif" font-size="32" fill="#6B7280">Respiratory care · Home healthcare · Bengaluru · India-wide supply</text>
+  <rect x="140" y="438" width="245" height="62" rx="31" fill="#0E8F8F"/>
+  <text x="176" y="479" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="white">Since 2004</text>
+  <rect x="415" y="438" width="245" height="62" rx="31" fill="#C8A45D"/>
+  <text x="455" y="479" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="white">ISO Quality</text>
+</svg>
