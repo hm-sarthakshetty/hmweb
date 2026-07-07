@@ -87,7 +87,7 @@ a { color: inherit; }
 .nav-toggle { display: none; }
 
 .side-scroll {
-  height: calc(100vh - var(--header));
+  height: calc(100vh - var(--top) - var(--header));
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
@@ -335,38 +335,4 @@ h3 { font-size: 1.35rem; }
   .hero::after, .page-dots { display: none; }
   .story-six { -webkit-text-stroke-width: 5px; }
   .machine-panel--main { transform: none; }
-}
-
-/* Pinned vertical-to-horizontal side-scroll, matching the reference interaction */
-@media (min-width: 981px) {
-  body { overflow-x: hidden; overflow-y: auto; }
-  .side-scroll {
-    --panel-count: 6;
-    height: calc(var(--panel-count) * (100vh - var(--header)));
-    display: block;
-    overflow: visible;
-    scrollbar-width: none;
-  }
-  .side-scroll::-webkit-scrollbar { display: none; }
-  .side-track {
-    position: sticky;
-    top: var(--header);
-    height: calc(100vh - var(--header));
-    display: flex;
-    width: max-content;
-    transform: translate3d(var(--scroll-x, 0px), 0, 0);
-    transition: transform .08s linear;
-    will-change: transform;
-  }
-  .panel {
-    min-width: 100vw;
-    min-height: calc(100vh - var(--header));
-    height: calc(100vh - var(--header));
-    flex: 0 0 100vw;
-    scroll-snap-align: none;
-  }
-  .scroll-cue::after {
-    content: "  Use vertical scroll to travel sideways";
-    opacity: .82;
-  }
 }
