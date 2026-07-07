@@ -1,0 +1,73 @@
+name: Deploy static site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ensure GitHub Pages site exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+          API_VERSION: 2026-03-10
+        run: |
+          set -euo pipefail
+          pages_api="https://api.github.com/repos/${GITHUB_REPOSITORY}/pages"
+          status="$(curl -sS -o /tmp/pages-site.json -w "%{http_code}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "X-GitHub-Api-Version: ${API_VERSION}" \
+            "${pages_api}")"
+
+          if [ "${status}" = "404" ]; then
+            echo "GitHub Pages is not enabled for this repository. Creating a workflow-based Pages site."
+            create_status="$(curl -sS -o /tmp/pages-create.json -w "%{http_code}" \
+              -X POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "X-GitHub-Api-Version: ${API_VERSION}" \
+              "${pages_api}" \
+              -d '{"build_type":"workflow"}')"
+            if [ "${create_status}" != "201" ] && [ "${create_status}" != "409" ]; then
+              echo "Unable to create the GitHub Pages site. API response:"
+              cat /tmp/pages-create.json
+              exit 1
+            fi
+          elif [ "${status}" = "200" ]; then
+            echo "GitHub Pages is already enabled for this repository."
+          else
+            echo "Unable to inspect GitHub Pages site. API response:"
+            cat /tmp/pages-site.json
+            exit 1
+          fi
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload static site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
