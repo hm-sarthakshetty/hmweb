@@ -8,21 +8,21 @@ if (toggle && links) {
 }
 
 const sideScroll = document.querySelector('.side-scroll');
-const canSmoothSideScroll = () => window.matchMedia('(min-width: 981px)').matches;
+const canSideScroll = () => window.matchMedia('(min-width: 981px)').matches;
 
 if (sideScroll) {
   sideScroll.addEventListener('wheel', (event) => {
-    if (!canSmoothSideScroll() || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+    if (!canSideScroll() || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
     event.preventDefault();
-    sideScroll.scrollBy({ left: event.deltaY, behavior: 'auto' });
+    sideScroll.scrollBy({ left: event.deltaY, behavior: 'smooth' });
   }, { passive: false });
 
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', (event) => {
       const target = document.querySelector(anchor.getAttribute('href'));
-      if (!target || !canSmoothSideScroll()) return;
+      if (!target || !canSideScroll()) return;
       event.preventDefault();
-      sideScroll.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
+      target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
       links?.classList.remove('open');
       toggle?.setAttribute('aria-expanded', 'false');
     });
